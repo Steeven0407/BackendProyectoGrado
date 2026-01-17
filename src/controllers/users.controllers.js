@@ -19,7 +19,7 @@ export const BuscarUsusarioPorCodigo = async (req, res) => {
     res.json(rows)
 };
 
-export const CrearUsuario = async (req, res) => {
+export const CrearUsuario = async (req, res, next) => {
     try {
         const { codigo, cedula, nombre, correo } = req.body;
 
@@ -31,12 +31,7 @@ export const CrearUsuario = async (req, res) => {
 
         return res.json(rows);
     } catch (error) {
-
-        if (error.code === '23505') {
-            return res.status(409).json({ message: 'Error: el código ya existe en el sistema' });
-        }
-
-        return res.status(500).json({ message: 'Error del servidor al crear el usuario' });
+        next(error);
     }
 };
 
@@ -66,3 +61,18 @@ export const ActualizarUsuario = async (req, res) => {
     return res.json(rows[0]);
 
 };
+
+
+
+export const IniciarSesion = async (req, res) => {
+    const { codigo, cedula, contrasena } = req.body;
+
+    const { rows } = await pool.query('SELECT * FROM usuarios where codigo = $1 AND cedula = $2 AND contrasena = $3', [codigo, cedula, contrasena]);
+
+    if (rows.length === 0 || !rows) {
+        return res.status(404).json({ message: 'Credenciales inválidas' })
+    }
+
+    res.json(rows[0]);
+};
+

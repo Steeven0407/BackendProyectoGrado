@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { BuscarTodosLosUsuarios, BuscarUsusarioPorCodigo, CrearUsuario, EliminarUsuario, ActualizarUsuario } from "../controllers/users.controllers.js";
+import { BuscarTodosLosUsuarios, BuscarUsusarioPorCodigo, CrearUsuario, EliminarUsuario, ActualizarUsuario, IniciarSesion } from "../controllers/users.controllers.js";
 const router = Router();
 
 
@@ -17,6 +17,8 @@ router.delete("/usuarios/:id", EliminarUsuario);
 //UPDATE
 router.put("/usuarios/:id", ActualizarUsuario);
 
+
+router.post("/IniciarSesion", IniciarSesion);
 
 
 
