@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { BuscarTodosLosUsuarios, BuscarUsusarioPorCodigo, CrearUsuario, EliminarUsuario, ActualizarUsuario, IniciarSesion } from "../controllers/users.controllers.js";
+import { ValidarToken } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 
@@ -15,7 +16,7 @@ router.post("/usuarios", CrearUsuario);
 router.delete("/usuarios/:id", EliminarUsuario);
 
 //UPDATE
-router.put("/usuarios/:id", ActualizarUsuario);
+router.put("/usuarios/:id", ValidarToken, ActualizarUsuario);
 
 
 router.post("/IniciarSesion", IniciarSesion);

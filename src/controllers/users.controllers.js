@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
+import jwt from 'jsonwebtoken';
 
-
+const signatureKey = process.env.SIGNATURE_KEY;
 
 export const BuscarTodosLosUsuarios = async (req, res) => {
     const { rows } = await pool.query('SELECT * FROM usuarios')
@@ -49,7 +50,6 @@ export const EliminarUsuario = async (req, res) => {
 
 export const ActualizarUsuario = async (req, res) => {
     const { id } = req.params;
-
     const data = req.body;
 
     const { rows, rowCount } = await pool.query(`UPDATE usuarios SET cedula = $1, nombre = $2, correo = $3 WHERE codigo = $4 RETURNING *`, [data.cedula, data.nombre, data.correo, id])
@@ -58,21 +58,42 @@ export const ActualizarUsuario = async (req, res) => {
         return res.status(404).json({ message: 'Usuario no encontrado en el sistema para ser actualizado' })
     }
 
-    return res.json(rows[0]);
+    return res.json({ message: 'Usuario actualizado correctamente', usuario: rows[0].codigo });
 
 };
 
 
 
-export const IniciarSesion = async (req, res) => {
-    const { codigo, cedula, contrasena } = req.body;
+export const IniciarSesion = async (req, res, next) => {
+    try {
+        const { codigo, cedula, contrasena } = req.body;
 
-    const { rows } = await pool.query('SELECT * FROM usuarios where codigo = $1 AND cedula = $2 AND contrasena = $3', [codigo, cedula, contrasena]);
+        const { rows } = await pool.query('SELECT codigo, cedula, nombre, correo, primerinicio FROM usuarios where codigo = $1 AND cedula = $2 AND contrasena = $3', [codigo, cedula, contrasena]);
 
-    if (rows.length === 0 || !rows) {
-        return res.status(404).json({ message: 'Credenciales inválidas' })
+        if (rows.length === 0 || !rows) {
+            return res.status(404).json({ message: 'Credenciales inválidas' })
+        }
+
+        const dataUser = rows[0];
+
+        const token = jwt.sign(
+            {
+                id: dataUser.id,
+                codigo: dataUser.codigo,
+                correo: dataUser.correo
+            },
+            signatureKey,
+            {
+                expiresIn: '1h'
+            }
+        );
+
+        res.json({
+            token,
+            dataUser
+        });
+    } catch (error) {
+        next(error);
     }
-
-    res.json(rows[0]);
 };
 
