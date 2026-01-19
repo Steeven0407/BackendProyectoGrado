@@ -4,8 +4,8 @@ CREATE TABLE usuario (
     codigo SERIAL PRIMARY KEY,
     cedula VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(150) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL,
+    correo VARCHAR(300) UNIQUE NOT NULL,
+    contrasena VARCHAR(400) NOT NULL,
     primerinicio BOOLEAN DEFAULT TRUE
 );
 
