@@ -63,7 +63,7 @@ export const ActualizarUsuario = async (req, res) => {
     const  id  = Number(req.params.id);
 
     if (isNaN(id)) {
-        return res.status(400).json({ message: 'El ID proporcionado no es un número válido' });
+        return res.status(400).json({ message: 'El ID proporcionado no es un número valido' });
     }
 
     const data = req.body;
