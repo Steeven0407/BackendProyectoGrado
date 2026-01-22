@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
 import jwt from 'jsonwebtoken';
 import argon2 from "argon2";
+import { body, param, validationResult } from 'express-validator';
 
 const signatureKey = process.env.SIGNATURE_KEY;
 
@@ -59,7 +60,12 @@ export const EliminarUsuario = async (req, res) => {
 };
 
 export const ActualizarUsuario = async (req, res) => {
-    const { id } = req.params;
+    const  id  = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'El ID proporcionado no es un número válido' });
+    }
+
     const data = req.body;
 
     const { rows, rowCount } = await pool.query(`UPDATE usuarios SET cedula = $1, nombre = $2, correo = $3 WHERE codigo = $4 RETURNING *`, [data.cedula, data.nombre, data.correo, id])
