@@ -1,6 +1,6 @@
 CREATE DATABASE bdrepositorio;
 
-CREATE TABLE usuario (
+CREATE TABLE usuarios (
     codigo SERIAL PRIMARY KEY,
     cedula VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
