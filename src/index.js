@@ -3,11 +3,19 @@ import { PORT } from './config.js';
 import userRoutes from './routes/users.routes.js';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/errors.middleware.js';
+import cors from "cors";
+
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
+
 app.use(userRoutes);
 app.use(errorHandler);
 

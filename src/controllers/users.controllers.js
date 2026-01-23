@@ -82,6 +82,7 @@ export const ActualizarUsuario = async (req, res) => {
 
 export const IniciarSesion = async (req, res, next) => {
     try {
+        console.log(req.body)
         const { codigo, cedula, contrasena } = req.body;
 
         let contrasenaBD = await pool.query('SELECT contrasena FROM usuarios where codigo = $1 AND cedula = $2', [codigo, cedula]);
