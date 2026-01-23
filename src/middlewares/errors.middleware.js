@@ -27,6 +27,11 @@ export const errorHandler = (err, req, res, next) => {
                 message: 'Formato de dato inválido'
             });
 
+        case '42P01':
+            return res.status(404).json({
+                message: 'La tabla consultada no existe'
+            });
+
         default:
             return res.status(500).json({
                 message: 'Error interno del servidor'
