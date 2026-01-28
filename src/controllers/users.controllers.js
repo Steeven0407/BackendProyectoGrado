@@ -1,7 +1,6 @@
 import { pool } from "../db.js";
 import jwt from 'jsonwebtoken';
 import argon2 from "argon2";
-import { body, param, validationResult } from 'express-validator';
 
 const signatureKey = process.env.SIGNATURE_KEY;
 
@@ -60,7 +59,7 @@ export const EliminarUsuario = async (req, res) => {
 };
 
 export const ActualizarUsuario = async (req, res) => {
-    const  id  = Number(req.params.id);
+    const id = Number(req.params.id);
 
     if (isNaN(id)) {
         return res.status(400).json({ message: 'El ID proporcionado no es un número valido' });

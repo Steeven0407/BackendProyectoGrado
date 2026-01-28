@@ -1,6 +1,7 @@
 import express from 'express';
 import { PORT } from './config.js';
 import userRoutes from './routes/users.routes.js';
+import documentRoutes from './routes/documents.routes.js';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/errors.middleware.js';
 import cors from "cors";
@@ -17,6 +18,7 @@ app.use(cors({
 }));
 
 app.use(userRoutes);
+app.use(documentRoutes);
 app.use(errorHandler);
 
 app.listen(PORT);

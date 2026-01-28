@@ -83,3 +83,14 @@ CREATE TABLE categoria (
         ON UPDATE CASCADE
         ON DELETE SET NULL
 );
+
+
+CREATE TABLE documentos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    categoria VARCHAR(100),
+    descripcion TEXT,
+    extension VARCHAR(10),
+    tamanio INTEGER,
+    enlace TEXT
+);
